@@ -65,7 +65,4 @@ public class Report extends AbstractEntity {
 
     @Column(name = "start_processing")
     private Instant startProcessing;
-
-
 }
-

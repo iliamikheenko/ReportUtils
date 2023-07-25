@@ -4,7 +4,6 @@ import com.medicbk.reportutils.dto.ReportDto;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
@@ -17,12 +16,22 @@ import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
 public class XmlParser {
 
-    public ReportDto extractInfoFromXml(String xmlContent) {
+
+    /**
+     * Extracts information from XML file and creates a {@link Optional<ReportDto>}
+     * object containing the extracted data.
+     *
+     * @param xmlContent The XML file from which the information will be extracted.
+     * @return An {@link Optional<ReportDto>} object containing the extracted information,
+     *         or an empty {@link Optional} if an error occurs during extraction.
+     */
+    public Optional<ReportDto> extractInfoFromXml(String xmlContent) {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             InputSource is = new InputSource(new StringReader(xmlContent));
@@ -35,7 +44,7 @@ public class XmlParser {
             String idAttribute = (String) idExpr.evaluate(document, XPathConstants.STRING);
             String uuidAttribute = (String) uuidExpr.evaluate(document, XPathConstants.STRING);
 
-            //todo test ver, need to be checked
+            //TODO test ver, need to be checked
             List<Long> nosologyIds = new ArrayList<>();
             NodeList nodeList = document.getElementsByTagName("subgroup");
             for (int i = 0; i < nodeList.getLength(); i++) {
@@ -45,16 +54,16 @@ public class XmlParser {
                     nosologyIds.add(Long.parseLong(nosologyIdValue));
                 }
             }
-
-            return ReportDto.builder()
+            var reportDto = ReportDto.builder()
                     .patientId(Long.parseLong(idAttribute))
                     .uuid(UUID.fromString(uuidAttribute))
                     .nosologyIds(nosologyIds)
                     .build();
 
+            return Optional.of(reportDto);
+
         } catch (Exception e) {
-            e.printStackTrace();
+            return Optional.empty();
         }
-        return null;
     }
 }

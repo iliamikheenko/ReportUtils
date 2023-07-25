@@ -1,5 +1,6 @@
 package com.medicbk.reportutils;
 
+import com.medicbk.reportutils.util.DirectoryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class ReportUtilsApplication {
 
-    private final DirectoryProcessor directoryProcessor;
+    private final DirectoryUtils directoryUtils;
 
     @Value("${source.path}")
     private String folderPath;
@@ -21,6 +22,6 @@ public class ReportUtilsApplication {
 
     }
     private void processXmlFilesInDirectory() {
-        directoryProcessor.processXmlFilesInDirectory(folderPath);
+        directoryUtils.processXmlFilesInDirectory(folderPath);
     }
 }
