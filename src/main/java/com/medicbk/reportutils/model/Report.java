@@ -29,7 +29,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "reports", schema = "report_manager", catalog = "medicbk")
+@Table(name = "reports", schema = "report_manager")
 public class Report extends AbstractEntity {
     private static final long serialVersionUID = -4891431056629488419L;
 

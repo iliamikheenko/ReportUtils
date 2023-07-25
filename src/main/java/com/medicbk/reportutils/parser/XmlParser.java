@@ -21,8 +21,6 @@ import java.util.UUID;
 
 @Component
 public class XmlParser {
-
-
     /**
      * Extracts information from XML file and creates a {@link Optional<ReportDto>}
      * object containing the extracted data.
