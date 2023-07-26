@@ -41,8 +41,8 @@ public class XmlFileProcessor {
                 boolean patientExists = reportService.isPatientExist(patientId);
                 if (!patientExists) {
                     reportService.createInstanceAndSave(patientUUID, patientId, nosologyIds,filePath);
+                    copyXmlAndHtmlFiles(filePath);
 
-                    Files.copy(filePath, Path.of(newDirPath +"/" + filePath.getFileName()));
                 } else {
                 log.warn("Patient " + patientId + " already exists in database.");
                 }
@@ -52,5 +52,16 @@ public class XmlFileProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Copies an XML file and its corresponding HTML file to a specified destination directory.
+     * @param xmlPathFile the path of XML file
+     * @throws IOException
+     */
+    private void copyXmlAndHtmlFiles(Path xmlPathFile) throws IOException {
+        Files.copy(xmlPathFile, Path.of(newDirPath +"/" + xmlPathFile.getFileName()));
+        Path htmlFilePath = xmlPathFile.resolveSibling(xmlPathFile.getFileName().toString().replace(".xml", ".html"));
+        Files.copy(htmlFilePath, Path.of(newDirPath + "/" + htmlFilePath.getFileName()));
     }
 }
